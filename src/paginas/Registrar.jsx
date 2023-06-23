@@ -1,16 +1,57 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
-
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import Alerta from '../components/Alerta'
 
 const Registrar = () => {
+
+  const [nombre, setNombre] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [repetirPassword, setRepetirPassword] = useState('')
+  const [alerta, setAlerta] = useState({})
+
+
+  const handleSubmit = (e) =>{
+    e.preventDefault()
+
+    //Validar que todos lo campos esten llenos
+    if([nombre, email, password, repetirPassword].includes('')){
+      setAlerta({
+        msg:"Todos los campos son obligatorios",
+        error:true
+    })
+  }
+    
+  //Validar que ambos passwords sean iguales
+  if(password !== repetirPassword){
+    setAlerta({
+      msg:"Las contraseñas no coinciden",
+      error:true
+    })
+  }
+   
+  if(password.length<6){
+    setAlerta({
+      msg:"Intenta con una contraseña superior a 6 caracteres",
+      error:true
+    })
+  }
+
+  }
+
+  const {msg} = alerta
+
+
+
   return (
     <>
       <h1 className='text-sky-600 text-6xl font-bold capitalize'>Crea tu cuenta y administra tus 
         <span className='text-slate-700'> proyectos</span>
       </h1>
+      {msg && <Alerta alerta={alerta}/>}
 
       {/*Formulario de registro*/}
-      <form className='my-10 bg-white shadow rounded-lg p-5'>
+      <form onSubmit={handleSubmit} className='my-10 bg-white shadow rounded-lg p-5'>
         <div className='my-5 uppercase text-gray-600 font-bold text-xl'>
           <label htmlFor="nombre" className='block uppercase text-gray-600 font-bold text-xl'>Nombre</label>
           <input
@@ -18,6 +59,8 @@ const Registrar = () => {
             type="text"
             placeholder='Ingresa tu nombre'
             className='w-full rounded-xl mt-3 p-3 border bg-gray-50'
+            value={nombre}
+            onChange={e=>setNombre(e.target.value)}
           />
         </div>
 
@@ -28,6 +71,8 @@ const Registrar = () => {
             type="email"
             placeholder='Ingresa tu email'
             className='w-full rounded-xl mt-3 p-3 border bg-gray-50'
+            value={email}
+            onChange={e=>setEmail(e.target.value)}
           />
         </div>
 
@@ -38,6 +83,8 @@ const Registrar = () => {
             type="password"
             placeholder='Ingresa tu password'
             className='w-full rounded-xl mt-3 p-3 border bg-gray-50'
+            value={password}
+            onChange={e=>setPassword(e.target.value)}
           />
         </div>
 
@@ -48,6 +95,8 @@ const Registrar = () => {
             type="password"
             placeholder='Repite tu password'
             className='w-full rounded-xl p-3 border bg-gray-50 '
+            value={repetirPassword}
+            onChange={e=>setRepetirPassword(e.target.value)}            
           />
         </div>
 
