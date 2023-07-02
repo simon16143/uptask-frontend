@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Alerta from '../components/Alerta'
+import axios from 'axios'
 
 const Registrar = () => {
 
@@ -11,7 +12,7 @@ const Registrar = () => {
   const [alerta, setAlerta] = useState({})
 
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = async (e) =>{
     e.preventDefault()
 
     //Validar que todos lo campos esten llenos
@@ -20,6 +21,7 @@ const Registrar = () => {
         msg:"Todos los campos son obligatorios",
         error:true
     })
+    return
   }
     
   //Validar que ambos passwords sean iguales
@@ -28,16 +30,40 @@ const Registrar = () => {
       msg:"Las contraseñas no coinciden",
       error:true
     })
+    return
   }
-   
+ //Validar el tamaño del password  
   if(password.length<6){
     setAlerta({
       msg:"Intenta con una contraseña superior a 6 caracteres",
       error:true
     })
+    return
+  }
+  setAlerta({})
+  //Crear al usuario en la API
+  try{
+    const {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/usuarios`,{
+      nombre, password, email
+    })
+    setAlerta({
+      msg:data.msg,
+      error:false
+    })
+    setNombre("")
+    setEmail("")
+    setPassword("")
+    setRepetirPassword("")
+  }
+  
+  catch(e){
+    setAlerta({
+      msg:e.response.data.msg,
+      error:true
+    })
   }
 
-  }
+}
 
   const {msg} = alerta
 
