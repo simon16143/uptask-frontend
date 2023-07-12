@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react"
 import {Link, useParams} from "react-router-dom"
-import axios from "axios"
 import Alerta from "../components/Alerta"
+import clienteAxios from "../config/clienteAxios"
 
 const Confirmar = () => {
   const[alerta, setAlerta] = useState({})
@@ -16,9 +16,9 @@ const Confirmar = () => {
     const confirmarCuenta = async() =>{
       //con esta funcion voy a interactuar con el backend
       try{
-        const url = `http://localhost:3000/api/usuarios/confirmar/${id}`
+        const url = `/usuarios/confirmar/${id}`
         //se crea esta variable llamada data si todo sale bien
-        const {data} = await axios.get(url)
+        const {data} = await clienteAxios.get(url)
         setAlerta({
           msg:data.msg,
           error:false
