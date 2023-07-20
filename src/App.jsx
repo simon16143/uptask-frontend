@@ -7,6 +7,8 @@ import OlvidePassword from "./paginas/OlvidePassword.jsx"
 import NuevoPassword from "./paginas/NuevoPassword.jsx"
 import Confirmar from "./paginas/Confirmar.jsx"
 import { AuthProvider } from "./context/AuthProvider.jsx"
+import { ProyectosProvider } from "./context/ProyectosProvider.jsx"
+import Proyectos from "./paginas/Proyectos.jsx"
 import NuevoProyecto from "./paginas/NuevoProyecto.jsx"
 
 
@@ -16,6 +18,7 @@ function App() {
   return (
     <BrowserRouter>
     <AuthProvider>
+      <ProyectosProvider>
         <Routes>
           {/*Agrupa un grupo de pag de tipo publicas*/}
           <Route path="/" element={<AuthLayout/>}>
@@ -29,10 +32,12 @@ function App() {
             </Route>
           {/*Sección de ruta protegida*/}
             <Route path="/proyectos" element={<RutaProtegida/>}>
-               <Route index element={<NuevoProyecto/>}/> 
+               <Route index element={<Proyectos/>}/> 
+               <Route path="crear-proyecto" element={<NuevoProyecto/>}/>
 
             </Route>
         </Routes>
+        </ProyectosProvider>
       </AuthProvider>
     </BrowserRouter>
   )
